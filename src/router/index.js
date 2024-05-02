@@ -5,6 +5,7 @@ import VerseView from '@/views/VerseView.vue';
 import TodayQTView from '@/views/TodayQTView.vue';
 import WeeklyBulletinListView from '@/views/WeeklyBulletinListView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
+import DetailView from '@/views/DetailView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,24 +16,31 @@ const router = createRouter({
 			component: HomeView
 		},
 		{
-			path: '/posts',
-			name: 'PostEdit',
-			component: PostEditView
-		},
-		{
-			path: '/verses',
-			name: 'Verse',
-			component: VerseView
-		},
-		{
-			path: '/todayqt',
-			name: 'TodayQT',
-			component: TodayQTView
-		},
-		{
-			path: '/bulletin',
-			name: 'WeeklyBulletinList',
-			component: WeeklyBulletinListView
+			path: '/detail',
+			name: 'Detail',
+			component: DetailView,
+			children: [
+				{
+					path: 'posts',
+					name: 'PostEdit',
+					component: PostEditView
+				},
+				{
+					path: 'verses',
+					name: 'Verse',
+					component: VerseView
+				},
+				{
+					path: 'todayqt',
+					name: 'TodayQT',
+					component: TodayQTView
+				},
+				{
+					path: 'bulletin',
+					name: 'WeeklyBulletinList',
+					component: WeeklyBulletinListView
+				}
+			]
 		},
 		{
 			path: '/:pathMatch(.*)*',

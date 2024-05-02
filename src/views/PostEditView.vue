@@ -6,11 +6,6 @@
 				<h3>Content</h3>
 				<pre><code>{{ content }}</code></pre>
 			</div>
-			<div class="h-96"></div>
-			<div class="h-96"></div>
-			<div class="h-96"></div>
-			<div class="h-96"></div>
-			<div class="h-96"></div>
 		</div>
 	</div>
 </template>

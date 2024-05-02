@@ -13,7 +13,7 @@
 			<div class="sm:flex sm:gap-x-12">
 				<div
 					class="my-2 flex items-stretch gap-x-1 text-sm font-semibold leading-6 text-gray-700 focus:outline-none">
-					<RouterLink to="/posts" active-class="text-gray-900">교회소식 </RouterLink>
+					<RouterLink to="/detail/posts" active-class="text-gray-900">교회소식 </RouterLink>
 				</div>
 
 				<div
@@ -23,7 +23,7 @@
 					<div class="flex my-2">
 						<button
 							class="flex place-self-stretch gap-x-1 text-sm font-semibold leading-6 text-gray-700 focus:outline-none">
-							<RouterLink to="/verses" active-class="text-gray-900">예배말씀</RouterLink>
+							<RouterLink to="/detail/verses" active-class="text-gray-900">예배말씀</RouterLink>
 							<ChevronDownIcon class="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
 						</button>
 					</div>
@@ -40,12 +40,18 @@
 							class="absolute -left-1 w-44 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 							<div class="py-1">
 								<li class="text-gray-700 px-4 py-2 text-sm">
-									<RouterLink to="/todayqt" class="block" active-class="bg-gray-100 text-gray-900"
+									<RouterLink
+										to="/detail/todayqt"
+										class="block"
+										active-class="bg-gray-100 text-gray-900"
 										>오늘의 묵상
 									</RouterLink>
 								</li>
 								<li class="text-gray-700 px-4 py-2 text-sm">
-									<RouterLink to="/bulletin" class="block" active-class="bg-gray-100 text-gray-900"
+									<RouterLink
+										to="/detail/bulletin"
+										class="block"
+										active-class="bg-gray-100 text-gray-900"
 										>주보
 									</RouterLink>
 								</li>
