@@ -1,6 +1,11 @@
 <template>
 	<div v-if="editor" class="flex p-1 gap-[2px]">
-		<input class="hidden" type="file" ref="fileInput" @change="handleFileInput($event)" />
+		<input
+			class="hidden"
+			type="file"
+			ref="fileInput"
+			@change="handleFileInput($event)"
+			accept="image/*" />
 		<span v-for="(buttonItem, index) in buttonItems" class="flex">
 			<EditorButton :key="index" v-bind="buttonItem"></EditorButton>
 		</span>
@@ -123,17 +128,21 @@ const fileInput = ref(null);
 const handleFileInput = (event) => {
 	const file = event.target.files[0];
 	const reader = new FileReader();
+	if (file) {
+		reader.readAsDataURL(file);
+		if (!file.type.includes('image')) {
+			alert(
+				`해당 파일은 이미지 파일이 아닙니다.\n이미지(JPG,JPEG,GIF,PNG)나 PDF 파일을 업로드 해주세요.`
+			);
+			event.target.value = '';
+			return;
+		}
+		event.target.value = '';
+	}
 	reader.onload = (e) => {
 		const base64 = e.target.result;
 		editor.value.chain().focus().setImage({ src: base64 }).run();
 	};
-	if (file) {
-		reader.readAsDataURL(file);
-		// console.log('제거전:', fileInput.value.files);
-		// console.dir('제거전:', fileInput.value.files);
-		// fileInput.value.files = new FileList();
-		// console.log('제거후:', fileInput.value.files);
-	}
 };
 
 const editor = useEditor({
