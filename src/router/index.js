@@ -2,10 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router';
 import PostEditView from '@/views/PostEditView.vue';
 import HomeView from '@/views/HomeView.vue';
 import VerseView from '@/views/VerseView.vue';
-import TodayQTView from '@/views/TodayQTView.vue';
-import WeeklyBulletinListView from '@/views/WeeklyBulletinListView.vue';
+import TodayQTView from '@/views/today-qt/TodayQTView.vue';
+import TodayQTEditView from '@/views/today-qt/TodayQTEditView.vue';
+import BulletinListView from '@/views/bulletin/BulletinListView.vue';
+import BulletinEditView from '@/views/bulletin/BulletinEditView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
 import DetailView from '@/views/DetailView.vue';
+import BulletinDetailView from '@/views/bulletin/BulletinDetailView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,8 +40,32 @@ const router = createRouter({
 				},
 				{
 					path: 'bulletin',
-					name: 'WeeklyBulletinList',
-					component: WeeklyBulletinListView
+					// name: 'WeeklyBulletinList',
+					// component: WeeklyBulletinListView,
+					children: [
+						{
+							path: '',
+							name: 'BulletinListView',
+							component: BulletinListView
+						},
+						{
+							path: 'new',
+							name: 'BulletinEditView',
+							component: BulletinEditView
+						},
+						{
+							path: ':id',
+							name: 'PostDetailView',
+							component: BulletinDetailView,
+							props: true
+						}
+					]
+				},
+
+				{
+					path: 'todayqt/edit',
+					name: 'TodayQTEditView',
+					component: TodayQTEditView
 				}
 			]
 		},
