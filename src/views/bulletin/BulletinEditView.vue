@@ -17,15 +17,15 @@
 				</div>
 				<!-- {{ content }} -->
 				<!-- <div> -->
-				<div class="flex flex-row-reverse">
-					<button class="btn-sm bg-primary hover:bg-primary-over active:bg-primary-press">
-						작성
-					</button>
-				</div>
 
 				<!-- <h3>Content</h3>
-				<pre><code>{{ contents }}</code></pre> -->
+						<pre><code>{{ contents }}</code></pre> -->
 				<!-- </div> -->
+			</div>
+			<div class="flex flex-row-reverse">
+				<button class="btn-sm bg-primary hover:bg-primary-over active:bg-primary-press">
+					작성
+				</button>
 			</div>
 		</div>
 	</div>

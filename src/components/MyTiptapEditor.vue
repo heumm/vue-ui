@@ -7,39 +7,11 @@
 			@change="handleFileInput($event)"
 			accept="image/*" />
 		<span v-for="(buttonItem, index) in buttonItems" class="flex">
-			<EditorButton :key="index" v-bind="buttonItem"></EditorButton>
+			<editor-button :key="index" v-bind="buttonItem"></editor-button>
 		</span>
-		<!-- <button
-			@click="editor.chain().focus().toggleBold().run()"
-			:disabled="!editor.can().chain().focus().toggleBold().run()"
-			:class="{ 'is-active': editor.isActive('bold') }">
-			bold
-		</button>
-		<button
-			@click="editor.chain().focus().toggleItalic().run()"
-			:disabled="!editor.can().chain().focus().toggleItalic().run()"
-			:class="{ 'is-active': editor.isActive('italic') }">
-			italic
-		</button>
-		<button
-			@click="editor.chain().focus().toggleStrike().run()"
-			:disabled="!editor.can().chain().focus().toggleStrike().run()"
-			:class="{ 'is-active': editor.isActive('strike') }">
-			strike
-		</button>
-		<button
-			@click="editor.chain().focus().toggleCode().run()"
-			:disabled="!editor.can().chain().focus().toggleCode().run()"
-			:class="{ 'is-active': editor.isActive('code') }">
-			code
-		</button>
+		<!-- 
 		<button @click="editor.chain().focus().unsetAllMarks().run()">clear marks</button>
 		<button @click="editor.chain().focus().clearNodes().run()">clear nodes</button>
-		<button
-			@click="editor.chain().focus().setParagraph().run()"
-			:class="{ 'is-active': editor.isActive('paragraph') }">
-			paragraph
-		</button>
 		<button
 			@click="editor.chain().focus().toggleHeading({ level: 1 }).run()"
 			:class="{ 'is-active': editor.isActive('heading', { level: 1 }) }">
@@ -69,16 +41,6 @@
 			@click="editor.chain().focus().toggleHeading({ level: 6 }).run()"
 			:class="{ 'is-active': editor.isActive('heading', { level: 6 }) }">
 			h6
-		</button>
-		<button
-			@click="editor.chain().focus().toggleBulletList().run()"
-			:class="{ 'is-active': editor.isActive('bulletList') }">
-			bullet list
-		</button>
-		<button
-			@click="editor.chain().focus().toggleOrderedList().run()"
-			:class="{ 'is-active': editor.isActive('orderedList') }">
-			ordered list
 		</button>
 		<button
 			@click="editor.chain().focus().toggleCodeBlock().run()"
@@ -113,7 +75,19 @@ import Image from '@tiptap/extension-image';
 import FileHandler from '@tiptap-pro/extension-file-handler';
 
 import EditorButton from '@/components/EditorButton.vue';
-import { mdiFormatBold, mdiImagePlus } from '@mdi/js'; //editor 버튼아이콘 path
+import {
+	mdiFormatBold,
+	mdiImagePlus,
+	mdiFormatItalic,
+	mdiFormatStrikethroughVariant,
+	// mdiCodeTags,
+	// mdiFormatParagraph,
+	mdiFormatListBulleted,
+	mdiOrderNumericAscending,
+	mdiCodeBlockTags,
+	mdiFormatQuoteClose,
+	mdiLandRowsHorizontal
+} from '@mdi/js'; //editor 버튼아이콘 path
 import { onBeforeUnmount, onMounted, watch, ref } from 'vue';
 
 const props = defineProps({
@@ -197,7 +171,8 @@ const editor = useEditor({
 	content: props.modelValue,
 	editorProps: {
 		attributes: {
-			class: 'prose prose-sm sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none bg-info'
+			class:
+				'prose prose-sm prose-gray sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2'
 		}
 	},
 	onUpdate: () => {
@@ -228,6 +203,60 @@ const buttonItems = [
 			fileInput.value.click();
 		},
 		path: mdiImagePlus
+	},
+	{
+		title: 'italic',
+		isActive: () => editor.value.isActive('italic'),
+		action: () => editor.value.chain().focus().toggleItalic().run(),
+		path: mdiFormatItalic
+	},
+	{
+		title: 'strike',
+		isActive: () => editor.value.isActive('strike'),
+		action: () => editor.value.chain().focus().toggleStrike().run(),
+		path: mdiFormatStrikethroughVariant
+	},
+	// {
+	// 	title: 'code',
+	// 	isActive: () => editor.value.isActive('code'),
+	// 	action: () => editor.value.chain().focus().toggleCode().run(),
+	// 	path: mdiCodeTags
+	// },
+	// {
+	// 	title: 'paragraph',
+	// 	isActive: () => editor.value.isActive('paragraph'),
+	// 	action: () => editor.value.chain().focus().setParagraph().run(),
+	// 	path: mdiFormatParagraph
+	// }
+	{
+		title: 'bulletList',
+		isActive: () => editor.value.isActive('bulletList'),
+		action: () => editor.value.chain().focus().toggleBulletList().run(),
+		path: mdiFormatListBulleted
+	},
+	{
+		title: 'orderedList',
+		isActive: () => editor.value.isActive('orderedList'),
+		action: () => editor.value.chain().focus().toggleOrderedList().run(),
+		path: mdiOrderNumericAscending
+	},
+	{
+		title: 'codeBlock',
+		isActive: () => editor.value.isActive('codeBlock'),
+		action: () => editor.value.chain().focus().toggleCodeBlock().run(),
+		path: mdiCodeBlockTags
+	},
+	{
+		title: 'blockquote',
+		isActive: () => editor.value.isActive('blockquote'),
+		action: () => editor.value.chain().focus().toggleBlockquote().run(),
+		path: mdiFormatQuoteClose
+	},
+	{
+		title: 'horizontalRule',
+		isActive: () => false,
+		action: () => editor.value.chain().focus().setHorizontalRule().run(),
+		path: mdiLandRowsHorizontal
 	}
 ];
 
