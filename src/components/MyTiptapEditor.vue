@@ -7,7 +7,11 @@
 			@change="handleFileInput($event)"
 			accept="image/*" />
 		<span v-for="(buttonItem, index) in buttonItems" class="flex">
-			<editor-button :key="index" v-bind="buttonItem"></editor-button>
+			<editor-button
+				v-if="buttonItem.title !== 'delimiter'"
+				:key="index"
+				v-bind="buttonItem"></editor-button>
+			<div v-else class="mx-2 p-[1px] divide bg-gray"></div>
 		</span>
 		<!-- 
 		<button @click="editor.chain().focus().unsetAllMarks().run()">clear marks</button>
@@ -73,6 +77,9 @@ import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
 import Image from '@tiptap/extension-image';
 import FileHandler from '@tiptap-pro/extension-file-handler';
+import Youtube from '@tiptap/extension-youtube';
+import ImageResize from 'tiptap-extension-resize-image';
+import Blockquote from '@tiptap/extension-blockquote';
 
 import EditorButton from '@/components/EditorButton.vue';
 import {
@@ -86,7 +93,9 @@ import {
 	mdiOrderNumericAscending,
 	mdiCodeBlockTags,
 	mdiFormatQuoteClose,
-	mdiLandRowsHorizontal
+	// mdiLandRowsHorizontal,
+	mdiVideoPlus,
+	mdiMinus
 } from '@mdi/js'; //editor 버튼아이콘 path
 import { onBeforeUnmount, onMounted, watch, ref } from 'vue';
 
@@ -122,10 +131,12 @@ const handleFileInput = (event) => {
 const editor = useEditor({
 	extensions: [
 		StarterKit,
+		Blockquote,
 		Image.configure({
 			inline: true,
 			allowBase64: true
 		}),
+		ImageResize,
 		FileHandler.configure({
 			allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
 			onDrop: (currentEditor, files, pos) => {
@@ -166,13 +177,16 @@ const editor = useEditor({
 					};
 				});
 			}
+		}),
+		Youtube.configure({
+			inline: false
 		})
 	],
 	content: props.modelValue,
 	editorProps: {
 		attributes: {
 			class:
-				'prose prose-sm prose-gray sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2'
+				'prose prose-sm prose-gray sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2 prose-img:m-0 before:prose-p:content-none after:prose-p:content-none'
 		}
 	},
 	onUpdate: () => {
@@ -187,34 +201,26 @@ const editor = useEditor({
 
 const buttonItems = [
 	{
-		title: 'bold',
+		title: '굵게',
 		isActive: () => editor.value.isActive('bold'),
 		action: () => editor.value.chain().focus().toggleBold().run(),
 		path: mdiFormatBold
 	},
+
 	{
-		title: 'image',
-		isActive: () => false,
-		action: () => {
-			// const url = window.prompt('URL');
-			// if (url) {
-			// 	editor.value.chain().focus().setImage({ src: url }).run();
-			// }
-			fileInput.value.click();
-		},
-		path: mdiImagePlus
-	},
-	{
-		title: 'italic',
+		title: '기울임',
 		isActive: () => editor.value.isActive('italic'),
 		action: () => editor.value.chain().focus().toggleItalic().run(),
 		path: mdiFormatItalic
 	},
 	{
-		title: 'strike',
+		title: '취소선',
 		isActive: () => editor.value.isActive('strike'),
 		action: () => editor.value.chain().focus().toggleStrike().run(),
 		path: mdiFormatStrikethroughVariant
+	},
+	{
+		title: 'delimiter'
 	},
 	// {
 	// 	title: 'code',
@@ -229,34 +235,66 @@ const buttonItems = [
 	// 	path: mdiFormatParagraph
 	// }
 	{
-		title: 'bulletList',
+		title: '글머리(점)',
 		isActive: () => editor.value.isActive('bulletList'),
 		action: () => editor.value.chain().focus().toggleBulletList().run(),
 		path: mdiFormatListBulleted
 	},
 	{
-		title: 'orderedList',
+		title: '글머리(순서)',
 		isActive: () => editor.value.isActive('orderedList'),
 		action: () => editor.value.chain().focus().toggleOrderedList().run(),
 		path: mdiOrderNumericAscending
 	},
 	{
-		title: 'codeBlock',
+		title: '코드',
 		isActive: () => editor.value.isActive('codeBlock'),
 		action: () => editor.value.chain().focus().toggleCodeBlock().run(),
 		path: mdiCodeBlockTags
 	},
 	{
-		title: 'blockquote',
+		title: '인용구',
 		isActive: () => editor.value.isActive('blockquote'),
 		action: () => editor.value.chain().focus().toggleBlockquote().run(),
 		path: mdiFormatQuoteClose
 	},
 	{
-		title: 'horizontalRule',
+		title: '구분선',
 		isActive: () => false,
 		action: () => editor.value.chain().focus().setHorizontalRule().run(),
-		path: mdiLandRowsHorizontal
+		path: mdiMinus
+	},
+	{
+		title: 'delimiter'
+	},
+	{
+		title: '사진첨부',
+		isActive: () => false,
+		action: () => {
+			// const url = window.prompt('URL');
+			// if (url) {
+			// 	editor.value.chain().focus().setImage({ src: url }).run();
+			// }
+			fileInput.value.click();
+		},
+		path: mdiImagePlus
+	},
+	{
+		title: '유튜브업로드',
+		isActive: () => false,
+		action: () => {
+			const url = prompt('YouTube주소를 입력해주세요.');
+			editor.value
+				.chain()
+				.focus()
+				.setYoutubeVideo({
+					src: url,
+					width: /*Math.max(320, parseInt(this.width, 10)) ||*/ 640,
+					height: /*Math.max(180, parseInt(this.height, 10)) ||*/ 480
+				})
+				.run();
+		},
+		path: mdiVideoPlus
 	}
 ];
 
