@@ -69,17 +69,21 @@
 			redo
 		</button> -->
 	</div>
-	<editor-content :editor="editor" />
+	<editor-content
+		class="min-h-[300px]"
+		:editor="editor"
+		@click="editor.chain().focus().run()"
+		@mouseenter="console.log()" />
 </template>
 
 <script setup>
 import { useEditor, EditorContent } from '@tiptap/vue-3';
 import StarterKit from '@tiptap/starter-kit';
-import Image from '@tiptap/extension-image';
+// import Image from '@tiptap/extension-image';
 import FileHandler from '@tiptap-pro/extension-file-handler';
 import Youtube from '@tiptap/extension-youtube';
 import ImageResize from 'tiptap-extension-resize-image';
-import Blockquote from '@tiptap/extension-blockquote';
+// import Blockquote from '@tiptap/extension-blockquote';
 
 import EditorButton from '@/components/EditorButton.vue';
 import {
@@ -130,12 +134,17 @@ const handleFileInput = (event) => {
 
 const editor = useEditor({
 	extensions: [
-		StarterKit,
-		Blockquote,
-		Image.configure({
-			inline: true,
-			allowBase64: true
+		StarterKit.configure({
+			image: {
+				inline: true,
+				allowBase64: true
+			}
 		}),
+		// Blockquote,
+		// Image.configure({
+		// 	inline: true,
+		// 	allowBase64: true
+		// }),
 		ImageResize,
 		FileHandler.configure({
 			allowedMimeTypes: ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
@@ -218,6 +227,44 @@ const buttonItems = [
 		isActive: () => editor.value.isActive('strike'),
 		action: () => editor.value.chain().focus().toggleStrike().run(),
 		path: mdiFormatStrikethroughVariant
+	},
+	{
+		title: '제목1',
+		isActive: () => editor.value.isActive('heading', { level: 1 }),
+		action: () => editor.value.chain().focus().toggleHeading({ level: 1 }).run(),
+		path: null,
+		items: [
+			{
+				title: '제목2',
+				isActive: () => editor.value.isActive('heading', { level: 2 }),
+				action: () => editor.value.chain().focus().toggleHeading({ level: 2 }).run(),
+				path: null
+			},
+			{
+				title: '제목3',
+				isActive: () => editor.value.isActive('heading', { level: 3 }),
+				action: () => editor.value.chain().focus().toggleHeading({ level: 3 }).run(),
+				path: null
+			},
+			{
+				title: '제목4',
+				isActive: () => editor.value.isActive('heading', { level: 4 }),
+				action: () => editor.value.chain().focus().toggleHeading({ level: 4 }).run(),
+				path: null
+			}
+			// {
+			// 	title: 'heading5',
+			// 	isActive: () => editor.value.isActive('heading', { level: 5 }),
+			// 	action: () => editor.value.chain().focus().toggleHeading({ level: 5 }).run(),
+			// 	path: null
+			// },
+			// {
+			// 	title: 'heading6',
+			// 	isActive: () => editor.value.isActive('heading', { level: 6 }),
+			// 	action: () => editor.value.chain().focus().toggleHeading({ level: 6 }).run(),
+			// 	path: null
+			// }
+		]
 	},
 	{
 		title: 'delimiter'
