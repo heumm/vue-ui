@@ -11,7 +11,7 @@
 				v-if="buttonItem.title !== 'delimiter'"
 				:key="index"
 				v-bind="buttonItem"></editor-button>
-			<div v-else class="mx-2 p-[1px] divide bg-gray"></div>
+			<div v-else class="mx-2 p-[1px] divide bg-gray-500"></div>
 		</span>
 		<!-- 
 		<button @click="editor.chain().focus().unsetAllMarks().run()">clear marks</button>
@@ -195,7 +195,7 @@ const editor = useEditor({
 	editorProps: {
 		attributes: {
 			class:
-				'prose prose-sm prose-gray sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2 prose-img:m-0 before:prose-p:content-none after:prose-p:content-none'
+				'prose prose-sm prose-gray-500 sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2 prose-img:m-0 before:prose-p:content-none after:prose-p:content-none'
 		}
 	},
 	onUpdate: () => {

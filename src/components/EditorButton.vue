@@ -21,7 +21,7 @@
 			leave-to-class="transform opacity-0 scale-95">
 			<div
 				v-if="displayTooltip"
-				class="bg-gray absolute px-1 my-1 bg-opacity-50 rounded shadow text-nowrap text-xs text-center">
+				class="bg-gray-500 absolute px-1 my-1 bg-opacity-50 rounded shadow text-nowrap text-xs text-center">
 				{{ title }}
 			</div>
 		</transition>
