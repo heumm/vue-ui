@@ -21,40 +21,75 @@ export default {
 		},
 		colors: {
 			primary: {
-				DEFAULT: '#ed566b',
-				over: '#e82842',
-				press: '#c8152d'
+				extralight: '#fde4e3',
+				light: '#facfcf',
+				DEFAULT: '#e57373',
+				dark: '#af4448',
+				extradark: '#7f1d1f'
 			},
 			secondary: {
-				DEFAULT: '#bd3b4e',
-				over: '#962f3e',
-				press: '#6f232e'
+				extralight: '#e0f7fa',
+				light: '#b2ebf2',
+				DEFAULT: '#4dd0e1',
+				dark: '#00838f',
+				extradark: '#005662'
+			},
+			accent: {
+				extralight: '#f3e5f5',
+				light: '#ce93d8',
+				DEFAULT: '#ab47bc',
+				dark: '#7b1fa2',
+				extradark: '#4a0072'
+			},
+			neutral: {
+				extralight: '#f6f6f6',
+				light: '#eeeeee',
+				DEFAULT: '#9e9e9e',
+				dark: '#616161',
+				extradark: '#212121'
 			},
 			info: {
-				DEFAULT: '#10adf4',
-				over: '#098cc8',
-				press: '#076a97'
-			},
-			danger: {
-				DEFAULT: '#f01c49',
-				over: '#cb0d36',
-				press: '#9b0a29'
-			},
-			caution: {
-				DEFAULT: '#eadb3a',
-				over: '#dac917',
-				press: '#ac9f12'
+				extralight: '#e6f3fd',
+				light: '#cce5fc',
+				DEFAULT: '#64b5f6',
+				dark: '#1976d2',
+				extradark: '#0d47a1'
 			},
 			success: {
-				DEFAULT: '#ace44a',
-				over: '#97da21',
-				press: '#78ae1a'
+				extralight: '#ecf6ee',
+				light: '#d6ecd9',
+				DEFAULT: '#66bb6a',
+				dark: '#388e3c',
+				extradark: '#1b5e20'
+			},
+			warning: {
+				extralight: '#ffefe3',
+				light: '#ffe0b2',
+				DEFAULT: '#ffa726',
+				dark: '#f57c00',
+				extradark: '#e65100'
+			},
+			danger: {
+				extralight: '#ffeaeb',
+				light: '#ffced2',
+				DEFAULT: '#ef5350',
+				dark: '#d32f2f',
+				extradark: '#b71c1c'
 			},
 			gray: {
-				DEFAULT: '#a89ea9',
-				text: '#534e56',
-				border: '#a89ea9',
-				link: '#39363b'
+				100: '#f5f5f5',
+				200: '#eeeeee',
+				300: '#e0e0e0',
+				400: '#bdbdbd',
+				500: '#9e9e9e',
+				600: '#757575',
+				700: '#616161',
+				800: '#424242',
+				900: '#212121'
+				// DEFAULT: '#a89ea9',
+				// text: '#534e56',
+				// border: '#a89ea9',
+				// link: '#39363b'
 			},
 			white: {
 				DEFAULT: '#ffffff'
