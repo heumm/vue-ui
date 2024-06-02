@@ -52,6 +52,11 @@ const menu = [
 	}
 ];
 
+export const useMemberStore = defineStore('member', () => {
+	const id = ref();
+	return { id };
+});
+
 export const useMenuStore = defineStore('menues', () => {
 	const menuList = menu;
 	const getMenus = computed(() => {
@@ -83,4 +88,9 @@ export const useBoardLayoutStore = defineStore('boardLayouts', () => {
 	}
 
 	return { getLayout, setLayout };
+});
+
+export const useLoginFormStore = defineStore('loginForm', () => {
+	const isMounted = ref(false);
+	return { isMounted };
 });
