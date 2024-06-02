@@ -9,14 +9,30 @@ import BulletinEditView from '@/views/bulletin/BulletinEditView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
 import DetailView from '@/views/DetailView.vue';
 import BulletinDetailView from '@/views/bulletin/BulletinDetailView.vue';
+import MemberLoginView from '@/views/member/MemberLoginView.vue';
+import MemberJoinView from '@/views/member/MemberJoinView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
+	scrollBehavior(to, from, savedPosition) {
+		// 항상 화면 상단으로 스크롤
+		return { top: 0 };
+	},
 	routes: [
 		{
 			path: '/',
 			name: 'Home',
 			component: HomeView
+		},
+		{
+			path: '/login',
+			name: 'MemberLogin',
+			component: MemberLoginView
+		},
+		{
+			path: '/join',
+			name: 'MemberJoin',
+			component: MemberJoinView
 		},
 		{
 			path: '/detail',
