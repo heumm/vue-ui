@@ -23,7 +23,7 @@
 				<!-- </div> -->
 			</div>
 			<div class="flex flex-row-reverse">
-				<button class="btn-sm bg-primary hover:bg-primary-over active:bg-primary-press">
+				<button class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark">
 					작성
 				</button>
 			</div>

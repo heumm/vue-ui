@@ -4,19 +4,19 @@
 			<div class="flex justify-between">
 				<div class="flex gap-x-1">
 					<button
-						class="btn-xs bg-secondary hover:bg-secondary-over active:bg-secondary-press"
+						class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark"
 						@click="store.setLayout('table')">
 						목록
 						<!-- <table-cells-icon></table-cells-icon> -->
 					</button>
 					<button
-						class="btn-xs bg-secondary hover:bg-secondary-over active:bg-secondary-press"
+						class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark"
 						@click="store.setLayout('card')">
 						카드
 					</button>
 				</div>
 				<div class="flex gap-x-1">
-					<select class="outline-none border focus:border-secondary rounded" name="" id="">
+					<select class="outline-none border focus:border-secondary rounded text-sm" name="" id="">
 						<option value="">제목</option>
 						<option value="">작성자</option>
 						<option value="">제목+내용</option>
@@ -24,7 +24,7 @@
 					<input
 						type="text"
 						class="grow px-1 outline-none border focus:border-secondary rounded placeholder:text-sm" />
-					<button class="btn-xs bg-secondary hover:bg-secondary-over active:bg-secondary-press">
+					<button class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark">
 						검색
 					</button>
 				</div>
@@ -45,10 +45,12 @@
 							<!-- <th></th> -->
 						</tr>
 					</thead>
-					<tbody class="text-sm text-gray-text">
+					<tbody class="text-sm text-gray-400">
 						<tr v-for="post in posts" :key="post.id">
 							<td class="px-3 py-1 border-b">{{ post.id }}</td>
-							<td class="px-3 py-1 border-b">{{ post.title }}</td>
+							<td class="px-3 py-1 border-b">
+								<router-link :to="`${$route.path}/${post.id}`">{{ post.title }}</router-link>
+							</td>
 							<td class="px-3 py-1 border-b">{{ post.regDate }}</td>
 							<!-- <td><img :src="post.imageUrl" alt="Post Image" width="100" /></td> -->
 						</tr>
@@ -59,7 +61,7 @@
 			<div v-else-if="store.getLayout.value === 'card'">
 				<div class="flex flex-wrap gap-x-5 gap-y-5">
 					<div
-						class="flex flex-col gap-y-1 hover:bg-primary p-3 rounded hover:bg-opacity-10 hover:cursor-pointer hover:text-primary-over transition-colors duration-75"
+						class="flex flex-col gap-y-1 hover:bg-primary p-3 rounded hover:bg-opacity-10 hover:cursor-pointer hover:text-primary-dark transition-colors duration-75"
 						v-for="(post, index) in posts"
 						:key="post.id"
 						@click="$router.push(`${$route.path}/${post.id}`)">
@@ -84,7 +86,7 @@
 			</div>
 			<router-link
 				:to="`${$route.path}/new`"
-				class="btn-sm bg-primary hover:bg-primary-over active:bg-primary-press self-end"
+				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
 				>글쓰기</router-link
 			>
 		</div>

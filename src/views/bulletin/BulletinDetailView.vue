@@ -6,7 +6,7 @@
 			<div>
 				<router-link
 					to="/detail/bulletin"
-					class="btn-sm bg-primary hover:bg-primary-over active:bg-primary-press">
+					class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark">
 					목록
 				</router-link>
 			</div>

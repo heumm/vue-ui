@@ -5,7 +5,7 @@
 			<div class="flex flex-row-reverse">
 				<router-link
 					:to="`${$route.path}/edit`"
-					class="btn-sm bg-primary hover:bg-primary-over active:bg-primary-press"
+					class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark"
 					>작성하기
 				</router-link>
 			</div>
