@@ -40,7 +40,7 @@
 							leave-to-class="transform opacity-0 scale-95">
 							<ul
 								v-if="dropdownVerse"
-								class="absolute -left-1 w-44 px-2 origin-top-left divide-y divide-dashed divide-primary divide-gray-200 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+								class="absolute -left-1 w-44 px-2 origin-top-left divide-y divide-dashed divide-primary rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 								<div v-for="child in menu.children" :key="child.id" class="">
 									<router-link
 										:to="child.uri"
