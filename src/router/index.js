@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router';
 import PostEditView from '@/views/PostEditView.vue';
 import HomeView from '@/views/HomeView.vue';
 import VerseView from '@/views/VerseView.vue';
-import TodayQTView from '@/views/today-qt/TodayQTView.vue';
-import TodayQTEditView from '@/views/today-qt/TodayQTEditView.vue';
+import QuietTimeListView from '@/views/quiet-time/QuietTimeListView.vue';
+import QuietTimeEditView from '@/views/quiet-time/QuietTimeEditView.vue';
+import QuietTimeDetailView from '@/views/quiet-time/QuietTimeDetailView.vue';
 import BulletinListView from '@/views/bulletin/BulletinListView.vue';
 import BulletinEditView from '@/views/bulletin/BulletinEditView.vue';
 import NotFoundView from '@/views/NotFoundView.vue';
@@ -51,8 +52,24 @@ const router = createRouter({
 				},
 				{
 					path: 'todayqt',
-					name: 'TodayQT',
-					component: TodayQTView
+					children: [
+						{
+							path: '',
+							name: 'QuietTimeList',
+							component: QuietTimeListView
+						},
+						{
+							path: 'new',
+							name: 'QuietTimeEdit',
+							component: QuietTimeEditView
+						},
+						{
+							path: ':id',
+							name: 'QuietTimeDetail',
+							component: QuietTimeDetailView,
+							props: true
+						}
+					]
 				},
 				{
 					path: 'bulletin',
@@ -61,27 +78,21 @@ const router = createRouter({
 					children: [
 						{
 							path: '',
-							name: 'BulletinListView',
+							name: 'BulletinList',
 							component: BulletinListView
 						},
 						{
 							path: 'new',
-							name: 'BulletinEditView',
+							name: 'BulletinEdit',
 							component: BulletinEditView
 						},
 						{
 							path: ':id',
-							name: 'PostDetailView',
+							name: 'PostDetail',
 							component: BulletinDetailView,
 							props: true
 						}
 					]
-				},
-
-				{
-					path: 'todayqt/edit',
-					name: 'TodayQTEditView',
-					component: TodayQTEditView
 				}
 			]
 		},
