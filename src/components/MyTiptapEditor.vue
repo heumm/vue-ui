@@ -70,7 +70,7 @@
 		</button> -->
 	</div>
 	<editor-content
-		class="min-h-[300px]"
+		class="min-h-[300px] hover:cursor-text"
 		:editor="editor"
 		@click="editor.chain().focus().run()"
 		@mouseenter="console.log()" />
