@@ -8,24 +8,6 @@
 import { RouterView } from 'vue-router';
 import HeaderView from '@/views/HeaderView.vue';
 import FooterView from '@/views/FooterView.vue';
-import { onMounted } from 'vue';
-import axios from '@/axios/axios.js';
 
-onMounted(() => {
-	sendRefreshCsrfRequest();
-});
-
-const sendRefreshCsrfRequest = () => {
-	axios
-		.get('/api/v1/csrf')
-		.then((res) => {
-			console.log('success');
-			// if (res.data.token) {
-			// 	config.headers['X-XSRF-TOKEN'] = res.data.token;
-			// }
-		})
-		.catch((err) => {
-			console.error('ERROR: ', err);
-		});
-};
+const api = {};
 </script>
