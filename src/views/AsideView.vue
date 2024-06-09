@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<aside>
+		<aside v-if="store.selectedMenu">
 			<router-link
 				:to="store.selectedMenu.uri"
 				class="block btn-lg rounded-sm bg-info hover:bg-info-dark active:bg-info-extradark py-3 mb-2 text-center text-md align-middle">

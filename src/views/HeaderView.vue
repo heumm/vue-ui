@@ -87,10 +87,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { ChevronDownIcon } from '@heroicons/vue/20/solid';
 import { useLoginFormStore, useMenuStore, useMemberStore } from '@/stores/store';
-
 import LoginMethodModalView from '@/views/member/LoginMethodModalView.vue';
 
 const menuStore = useMenuStore();
@@ -99,4 +98,8 @@ const memberStore = useMemberStore();
 
 const dropdownVerse = ref(false);
 const openLoginModal = ref(false);
+
+onMounted(async () => {
+	await menuStore.fetchMenus();
+});
 </script>
