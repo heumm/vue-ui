@@ -58,13 +58,6 @@ function getCsrfToken() {
 	return null;
 }
 
-// async function fetchCsrfToken() {
-// 	const response = await axios.get('http://localhost:8080/api/v1/csrf');
-// 	const csrfToken = response.data.token;
-// 	document.cookie = `XSRF-TOKEN=${csrfToken}; path=/`;
-// 	return csrfToken;
-// }
-
 //요청 인터셉터
 instance.interceptors.request.use(
 	async (config) => {
