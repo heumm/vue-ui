@@ -3,8 +3,15 @@ import { defineStore } from 'pinia';
 import axios from '@/axios/axios.js';
 
 export const useMemberStore = defineStore('member', () => {
-	const id = ref();
-	return { id };
+	const id = ref('');
+	const name = ref('');
+	const logout = () => {
+		localStorage.removeItem('member');
+		id.value = null;
+		name.value = null;
+	};
+
+	return { id, name, logout };
 });
 
 export const useMenuStore = defineStore('menus', () => {
@@ -16,11 +23,7 @@ export const useMenuStore = defineStore('menus', () => {
 	const selectedMenu = computed(() => {
 		for (const menu of menuList.value) {
 			if (menu.id === selectedMenuId.value) {
-				// localStorage.setItem('selectedMenu', JSON.stringify(menu));
-				// console.log(JSON.parse(localStorage.getItem('selectedMenu')));
 				return menu;
-			} else if (selectedMenuId.value === 0) {
-				// return JSON.parse(localStorage.getItem('selectedMenu'));
 			}
 		}
 	});
