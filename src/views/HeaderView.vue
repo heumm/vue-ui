@@ -77,7 +77,20 @@
 					class="text-sm hover:text-primary transition-colors duration-150 font-semibold leading-6">
 					회원가입/로그인 <span aria-hidden="true">&rarr;</span>
 				</button>
-				<span v-if="memberStore.id"> {{ memberStore.id }}</span>
+				<span v-if="memberStore.id" class="flex items-center">
+					<router-link
+						to="#"
+						class="text-sm font-bold hover:text-primary transition-colors duration-150">
+						{{ memberStore.name }}
+					</router-link>
+					<span class="text-sm">님&nbsp;</span>
+				</span>
+				<button
+					v-if="memberStore.id"
+					@click="memberStore.logout"
+					class="text-sm hover:text-primary transition-colors duration-150 font-semibold leading-6">
+					로그아웃 <span aria-hidden="true">&rarr;</span>
+				</button>
 			</div>
 			<login-method-modal-view
 				:open="openLoginModal"
