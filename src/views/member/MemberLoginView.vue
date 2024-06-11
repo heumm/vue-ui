@@ -11,7 +11,8 @@
 						id="email"
 						placeholder="이메일을 입력해주세요."
 						class="w-full p-3 border rounded-lg focus:outline-none focus:border-primary"
-						v-model="email" />
+						v-model="email"
+						@keyup.enter="api.post.login" />
 				</div>
 
 				<div class="mb-8 relative">
@@ -21,7 +22,8 @@
 						id="password"
 						placeholder="비밀번호를 입력해주세요."
 						class="w-full p-3 border rounded-lg focus:outline-none focus:border-primary"
-						v-model="password" />
+						v-model="password"
+						@keyup.enter="api.post.login" />
 					<button
 						type="button"
 						@click="togglePasswordVisibility"
@@ -37,7 +39,7 @@
 				<p v-if="isLoginFailed" class="text-danger text-sm mb-3">{{ loginErrorMessage }}</p>
 				<button
 					class="w-full bg-primary hover:bg-primary-dark active:bg-primary-extradark btn-lg disabled:bg-gray-500"
-					@click="login">
+					@click="api.post.login">
 					로그인
 				</button>
 
@@ -76,21 +78,26 @@ const memberStore = useMemberStore();
 const togglePasswordVisibility = () => {
 	passwordVisible.value = !passwordVisible.value;
 };
-const login = () => {
-	axios
-		.post('/api/v1/member/login', {
-			email: email.value,
-			password: password.value
-		})
-		.then((res) => {
-			console.log('200OK data: ', res.data);
-			memberStore.id = res.data;
-			router.push('/');
-		})
-		.catch((err) => {
-			isLoginFailed.value = true;
-			loginErrorMessage.value = err.response.data.message;
-		});
+
+const api = {
+	post: {
+		login: () => {
+			axios
+				.post('/api/v1/member/login', {
+					email: email.value,
+					password: password.value
+				})
+				.then((res) => {
+					memberStore.id = res.data.id;
+					memberStore.name = res.data.name;
+					router.push('/');
+				})
+				.catch((err) => {
+					isLoginFailed.value = true;
+					loginErrorMessage.value = err.response.data.message;
+				});
+		}
+	}
 };
 
 onMounted(() => {
