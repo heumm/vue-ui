@@ -151,7 +151,7 @@ const api = {
 	get: {
 		todayQt: () => {
 			axios
-				.get('/api/v1/quiet-time')
+				.get('/api/v1/quiet-time/list')
 				.then((res) => {
 					posts.value = [...res.data];
 					// 모든 배열 요소에 대해 regDate 포맷팅 적용

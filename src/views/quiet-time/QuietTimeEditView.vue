@@ -54,7 +54,7 @@ const api = {
 		todayQt: () => {
 			if (!validation.form()) return false;
 			axios
-				.post('/api/v1/quiet-time', {
+				.post('/api/v1/quiet-time/new', {
 					title: title.value,
 					content: contents.value,
 					authorId: memberStore.id
