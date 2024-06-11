@@ -1,48 +1,5 @@
 import axios from 'axios';
-
-function uuidToBase64(uuid) {
-	const hexToByteArray = (hex) => {
-		const bytes = [];
-		for (let i = 0; i < hex.length; i += 2) {
-			bytes.push(parseInt(hex.substr(i, 2), 16));
-		}
-		return bytes;
-	};
-
-	const byteArrayToBase64 = (byteArray) => {
-		const binaryString = String.fromCharCode.apply(null, byteArray);
-		return btoa(binaryString).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
-	};
-
-	const uuidHex = uuid.replace(/-/g, '');
-	const byteArray = hexToByteArray(uuidHex);
-	return byteArrayToBase64(byteArray);
-}
-
-function base64ToUUID(base64) {
-	const base64ToByteArray = (base64) => {
-		const binaryString = atob(base64.replace(/-/g, '+').replace(/_/g, '/'));
-		const byteArray = [];
-		for (let i = 0; i < binaryString.length; i++) {
-			byteArray.push(binaryString.charCodeAt(i));
-		}
-		return byteArray;
-	};
-
-	const byteArrayToHex = (byteArray) => {
-		return byteArray.map((byte) => ('0' + byte.toString(16)).slice(-2)).join('');
-	};
-
-	const byteArray = base64ToByteArray(base64);
-	const hexString = byteArrayToHex(byteArray);
-	return [
-		hexString.substring(0, 8),
-		hexString.substring(8, 12),
-		hexString.substring(12, 16),
-		hexString.substring(16, 20),
-		hexString.substring(20)
-	].join('-');
-}
+import { useMemberStore } from '@/stores/store';
 
 //Axios 인스턴스 생성
 const instance = axios.create({
@@ -69,6 +26,18 @@ instance.interceptors.request.use(
 		return config;
 	},
 	(error) => {
+		return Promise.reject(error);
+	}
+);
+
+instance.interceptors.response.use(
+	(response) => response,
+	(error) => {
+		if (error.response && error.response.status === 401) {
+			//서버에서 401 UNAUTHORIZED응답 시
+			const memberStore = useMemberStore();
+			memberStore.logout(); //로그아웃 처리
+		}
 		return Promise.reject(error);
 	}
 );
