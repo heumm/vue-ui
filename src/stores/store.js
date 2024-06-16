@@ -3,15 +3,24 @@ import { defineStore } from 'pinia';
 import axios from '@/axios/axios.js';
 
 export const useMemberStore = defineStore('member', () => {
-	const id = ref('');
-	const name = ref('');
+	const id = ref(null);
+	const name = ref(null);
 	const logout = () => {
-		localStorage.removeItem('member');
-		id.value = null;
-		name.value = null;
+		axios
+			.post('/api/v1/member/logout')
+			.then((res) => {})
+			.catch((err) => {})
+			.finally(() => {
+				localStorage.removeItem('member');
+				id.value = null;
+				name.value = null;
+			});
 	};
+	const isLoggedIn = computed(() => {
+		return id.value !== null;
+	});
 
-	return { id, name, logout };
+	return { id, name, logout, isLoggedIn };
 });
 
 export const useMenuStore = defineStore('menus', () => {
@@ -32,7 +41,7 @@ export const useMenuStore = defineStore('menus', () => {
 			const res = await axios.get('/api/v1/menu');
 			menuList.value = res.data;
 		} catch (err) {
-			console.error('Failed to fetch menus:', err);
+			// console.log('Failed to fetch menus:', err);
 		}
 	};
 	return { selectedMenuId, getMenus, selectedMenu, fetchMenus }; //getMenus를 포함한 객체를 반환하여 store를 정의한다.
@@ -52,5 +61,13 @@ export const useBoardLayoutStore = defineStore('boardLayouts', () => {
 
 export const useLoginFormStore = defineStore('loginForm', () => {
 	const isMounted = ref(false);
-	return { isMounted };
+	const openLoginModal = ref(false);
+	const close = () => {
+		openLoginModal.value = false;
+	};
+	const open = () => {
+		openLoginModal.value = true;
+	};
+	const isOpen = computed(() => openLoginModal.value);
+	return { isMounted, open, close, isOpen };
 });
