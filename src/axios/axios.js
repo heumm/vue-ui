@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useMemberStore } from '@/stores/store';
+import { useLoginFormStore, useMemberStore } from '@/stores/store';
 
 //Axios 인스턴스 생성
 const instance = axios.create({
@@ -30,13 +30,76 @@ instance.interceptors.request.use(
 	}
 );
 
+// 재발급 중복 방지 플래그
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error) => {
+	failedQueue.forEach((prom) => {
+		if (error) {
+			prom.reject(error);
+		} else {
+			prom.resolve();
+		}
+	});
+
+	failedQueue = [];
+};
+
 instance.interceptors.response.use(
 	(response) => response,
-	(error) => {
-		if (error.response && error.response.status === 401) {
-			//서버에서 401 UNAUTHORIZED응답 시
-			const memberStore = useMemberStore();
-			memberStore.logout(); //로그아웃 처리
+	async (error) => {
+		console.log('error caused: ', error);
+		const originalRequest = error.config;
+		if (error.response) {
+			if (
+				(error.response.data.cause === 'ACCESS_TOKEN_EXPIRED' ||
+					error.response.data.cause === 'ACCESS_TOKEN_BLANK') &&
+				!originalRequest._retry
+			) {
+				if (isRefreshing) {
+					return new Promise((resolve, reject) => {
+						failedQueue.push({ resolve, reject });
+					})
+						.then(() => {
+							return instance(originalRequest);
+						})
+						.catch((err) => {
+							return Promise.reject(err);
+						});
+				}
+
+				originalRequest._retry = true;
+				isRefreshing = true;
+				const memberStore = useMemberStore();
+				return new Promise((resolve, reject) => {
+					// refresh 토큰을 사용하여 access 토큰을 재발급받는 API 호출
+					instance
+						.post('/api/v1/member/refresh', { memberId: memberStore.id })
+						.then(() => {
+							processQueue(null);
+							resolve(instance(originalRequest));
+						})
+						.catch((err) => {
+							processQueue(err);
+							reject(err);
+						})
+						.finally(() => {
+							isRefreshing = false;
+						});
+				});
+			} else if (
+				error.response.data.cause === 'REFRESH_TOKEN_EXPIRED' ||
+				error.response.data.cause === 'REFRESH_TOKEN_BLANK'
+			) {
+				//서버에서 401 UNAUTHORIZED응답 시
+				const memberStore = useMemberStore();
+				const loginFormStore = useLoginFormStore();
+				memberStore.logout(); //로그아웃 처리
+				if (!loginFormStore.isMounted) {
+					loginFormStore.open();
+				}
+			}
 		}
 		return Promise.reject(error);
 	}
