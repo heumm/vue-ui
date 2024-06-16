@@ -8,9 +8,9 @@
 			leave-from="opacity-100"
 			leave-to="opacity-0">
 			<div
-				v-if="open"
+				v-if="loginFormStore.isOpen"
 				class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-80"
-				@click="$emit('close-modal')">
+				@click="loginFormStore.close()">
 				<div class="bg-white rounded-lg p-8 w-full max-w-sm" @click.stop>
 					<h1 class="text-center text-2xl font-bold mb-4">
 						쉽게 가입하고<br />
@@ -33,7 +33,7 @@
 						class="btn-lg bg-primary w-full hover:bg-primary-dark active:bg-primary-extradark"
 						@click="
 							$router.push(`/login`);
-							$emit('close-modal');
+							loginFormStore.close();
 						">
 						이메일로 계속하기
 					</button>
@@ -47,13 +47,10 @@
 </template>
 
 <script setup>
+import { useLoginFormStore } from '@/stores/store';
 import { ref } from 'vue';
 
-const props = defineProps({
-	open: Boolean
-});
-
-const emit = defineEmits(['close-modal']);
+const loginFormStore = useLoginFormStore();
 </script>
 
 <style lang="scss" scoped></style>

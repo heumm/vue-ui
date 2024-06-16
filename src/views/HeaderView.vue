@@ -72,12 +72,12 @@
 			<!-- 로그인 버튼 -->
 			<div class="hidden sm:flex sm:flex-1 sm:justify-end">
 				<button
-					@click="openLoginModal = true"
-					v-if="!loginFormStore.isMounted && !memberStore.id"
+					@click="loginFormStore.open"
+					v-if="!loginFormStore.isMounted && !memberStore.isLoggedIn"
 					class="text-sm hover:text-primary transition-colors duration-150 font-semibold leading-6">
 					회원가입/로그인 <span aria-hidden="true">&rarr;</span>
 				</button>
-				<span v-if="memberStore.id" class="flex items-center">
+				<span v-if="memberStore.isLoggedIn" class="flex items-center">
 					<router-link
 						to="#"
 						class="text-sm font-bold hover:text-primary transition-colors duration-150">
@@ -86,15 +86,13 @@
 					<span class="text-sm">님&nbsp;</span>
 				</span>
 				<button
-					v-if="memberStore.id"
+					v-if="memberStore.isLoggedIn"
 					@click="memberStore.logout"
 					class="text-sm hover:text-primary transition-colors duration-150 font-semibold leading-6">
 					로그아웃 <span aria-hidden="true">&rarr;</span>
 				</button>
 			</div>
-			<login-method-modal-view
-				:open="openLoginModal"
-				@close-modal="openLoginModal = false"></login-method-modal-view>
+			<login-method-modal-view></login-method-modal-view>
 		</nav>
 	</header>
 </template>
@@ -110,7 +108,6 @@ const loginFormStore = useLoginFormStore();
 const memberStore = useMemberStore();
 
 const dropdownVerse = ref(false);
-const openLoginModal = ref(false);
 
 onMounted(async () => {
 	await menuStore.fetchMenus();

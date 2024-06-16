@@ -38,7 +38,7 @@ import Editor from '@/components/Editor.vue';
 import MyTiptapEditor from '@/components/MyTiptapEditor.vue';
 import { onMounted, ref } from 'vue';
 import axios from '@/axios/axios.js';
-import { useMemberStore } from '@/stores/store';
+import { useLoginFormStore, useMemberStore } from '@/stores/store';
 import router from '@/router';
 
 const title = ref('');
@@ -64,7 +64,7 @@ const api = {
 					router.push('/detail/todayqt');
 				})
 				.catch((err) => {
-					console.log('error: ', err);
+					// console.log('error: ', err);
 				});
 		}
 	}
@@ -73,12 +73,14 @@ const api = {
 const validation = {
 	form: () => {
 		let isValid = false;
-		if (title.value === '') {
+		if (!memberStore.isLoggedIn) {
+			alert('로그인이 필요합니다!');
+			const loginFormStore = useLoginFormStore();
+			loginFormStore.open();
+		} else if (title.value === '') {
 			alert('제목을 입력해주세요.');
 		} else if (contents.value === '') {
 			alert('내용을 입력해주세요.');
-		} else if (!memberStore.id) {
-			alert('로그인이 필요합니다!');
 		} else {
 			isValid = true;
 		}

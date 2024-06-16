@@ -90,9 +90,11 @@ const api = {
 				.then((res) => {
 					memberStore.id = res.data.id;
 					memberStore.name = res.data.name;
-					router.push('/');
+					// router.push('/');
+					router.go(-1);
 				})
 				.catch((err) => {
+					// console.log(err);
 					isLoginFailed.value = true;
 					loginErrorMessage.value = err.response.data.message;
 				});

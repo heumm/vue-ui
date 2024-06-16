@@ -22,11 +22,10 @@ const api = {
 			axios
 				.get(`/api/v1/quiet-time/${route.params.id}`)
 				.then((res) => {
-					// console.log()
 					article.value = { ...res.data };
 				})
 				.catch((err) => {
-					console.log('error: ', err);
+					// console.log('error: ', err);
 				});
 		}
 	}
