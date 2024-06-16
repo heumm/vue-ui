@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useLoginFormStore, useMemberStore } from '@/stores/store';
 import PostEditView from '@/views/PostEditView.vue';
 import HomeView from '@/views/HomeView.vue';
 import VerseView from '@/views/VerseView.vue';
@@ -61,7 +62,8 @@ const router = createRouter({
 						{
 							path: 'new',
 							name: 'QuietTimeEdit',
-							component: QuietTimeEditView
+							component: QuietTimeEditView,
+							meta: { requiresAuth: true }
 						},
 						{
 							path: ':id',
@@ -110,6 +112,19 @@ const router = createRouter({
 		// 	component: () => import('../views/AboutView.vue')
 		// }
 	]
+});
+
+router.beforeEach((to, from, next) => {
+	const memberStore = useMemberStore();
+	const loginFormStore = useLoginFormStore();
+	const isLoggedIn = memberStore.isLoggedIn; // 사용자 인증 상태 확인
+
+	if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
+		// 인증되지 않은 사용자는 로그인 모달 오픈
+		loginFormStore.open();
+	} else {
+		next(); // 인증된 사용자는 요청한 페이지로 이동
+	}
 });
 
 export default router;
