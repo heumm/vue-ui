@@ -1,11 +1,8 @@
 import { createPinia } from 'pinia';
+import { watch } from 'vue';
 
 // 플러그인 함수 정의
 const usePersistedStatePlugin = ({ store }) => {
-	// 'member' 스토어를 배제하기 위해 스토어 ID 확인
-	// if (store.$id === 'member') {
-	// 	return;
-	// }
 	// 스토어의 상태를 localStorage에서 복원
 	const storedState = localStorage.getItem(store.$id);
 	if (storedState) {

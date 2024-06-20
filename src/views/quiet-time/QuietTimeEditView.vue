@@ -52,12 +52,12 @@ const memberStore = useMemberStore();
 const api = {
 	post: {
 		todayQt: () => {
-			if (!validation.form()) return false;
+			// if (!validation.form()) return false;
 			axios
 				.post('/api/v1/quiet-time/new', {
 					title: title.value,
-					content: contents.value,
-					authorId: memberStore.id
+					content: contents.value
+					// authorId: memberStore.id
 				})
 				.then((res) => {
 					alert('게시글 등록 완료');

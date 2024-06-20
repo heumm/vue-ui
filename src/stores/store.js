@@ -38,13 +38,14 @@ export const useMenuStore = defineStore('menus', () => {
 	});
 	const fetchMenus = async () => {
 		try {
+			// if (menuList.value.length > 0) return;
 			const res = await axios.get('/api/v1/menu');
 			menuList.value = res.data;
 		} catch (err) {
 			// console.log('Failed to fetch menus:', err);
 		}
 	};
-	return { selectedMenuId, getMenus, selectedMenu, fetchMenus }; //getMenus를 포함한 객체를 반환하여 store를 정의한다.
+	return { menuList, selectedMenuId, getMenus, selectedMenu, fetchMenus }; //getMenus를 포함한 객체를 반환하여 store를 정의한다.
 });
 
 export const useBoardLayoutStore = defineStore('boardLayouts', () => {
