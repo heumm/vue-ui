@@ -38,7 +38,7 @@ export const useMenuStore = defineStore('menus', () => {
 	});
 	const fetchMenus = async () => {
 		try {
-			// if (menuList.value.length > 0) return;
+			if (menuList.value.length > 0) return;
 			const res = await axios.get('/api/v1/menu');
 			menuList.value = res.data;
 		} catch (err) {
