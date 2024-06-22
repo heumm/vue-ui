@@ -8,6 +8,24 @@
 import { RouterView } from 'vue-router';
 import HeaderView from '@/views/HeaderView.vue';
 import FooterView from '@/views/FooterView.vue';
+import { onMounted } from 'vue';
+import axios from '@/axios/axios.js';
+import { getCsrfToken } from '@/axios/axios.js';
 
-const api = {};
+onMounted(() => {
+	if (getCsrfToken() === null) {
+		api.get.initToken();
+	}
+});
+
+const api = {
+	get: {
+		initToken: () => {
+			axios
+				.get('/api/v1')
+				.then(() => {})
+				.catch(() => {});
+		}
+	}
+};
 </script>
