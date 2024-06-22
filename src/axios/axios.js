@@ -8,12 +8,12 @@ const instance = axios.create({
 });
 
 //CSRF토큰을 쿠키에서 읽어오기
-function getCsrfToken() {
+export const getCsrfToken = () => {
 	const value = `; ${document.cookie}`;
 	const parts = value.split('; XSRF-TOKEN=');
 	if (parts.length === 2) return parts.pop().split(';').shift();
 	return null;
-}
+};
 
 //요청 인터셉터
 instance.interceptors.request.use(
