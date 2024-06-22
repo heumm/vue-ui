@@ -106,16 +106,7 @@
 						api.get.todayQt();
 					">
 					{{ pageIndex }}
-					<!-- pageNo - pageNo % onePage 부터 onePage만큼 반복 -->
 				</button>
-				<!-- <ul class="pagingList">
-                <li 
-                v-for = "item in countInPages" 
-                :key = "item"
-                :class = "(startPage-1)+item == page.page ? 'active' : null"
-                @click = "selectPage( (startPage-1)+item )"
-                > {{(startPage-1) + item}} </li>
-            </ul> -->
 				<button
 					class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark disabled:bg-disabled mx-1"
 					:disabled="isLastPage"
@@ -152,7 +143,6 @@ const totalPageNum = computed(() => Math.floor(totalCount.value / pageSize.value
 const onePage = ref(5);
 const totalCount = ref(0);
 const store = useBoardLayoutStore();
-//시작인덱스 = (pageNo / onePage) * onePage
 const startPageIndex = computed(
 	() => Math.floor((pageNo.value - 1) / onePage.value) * onePage.value + 1
 );
@@ -164,7 +154,6 @@ const isFirstPage = computed(() => endPageIndex.value <= onePage.value);
 const isLastPage = computed(() => totalPageNum.value - startPageIndex.value < 5);
 const pageArray = computed(() => {
 	const arr = [];
-
 	for (let i = startPageIndex.value; i <= Math.min(totalPageNum.value, endPageIndex.value); i++) {
 		arr.push(i);
 	}
@@ -197,17 +186,9 @@ const api = {
 							regDate: formatDate(post.regDate)
 						};
 					});
-					console.log('start:', startPageIndex.value);
-					console.log('end:', endPageIndex.value);
-					console.log('totalpage:', totalPageNum.value);
-					console.log('pagearr:', pageArray.value);
 				})
 				.catch((err) => {});
 		}
 	}
 };
-
-//먼저 현재 페이지, 총 페이지 갯수 변수 선언
-//네비게이션에 표시할 번호 갯수 정하기
-//몇 건씩 가저올지
 </script>
