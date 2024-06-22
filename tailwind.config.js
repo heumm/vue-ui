@@ -76,6 +76,9 @@ export default {
 				dark: '#d32f2f',
 				extradark: '#b71c1c'
 			},
+			disabled: {
+				DEFAULT: '#bdbdbd'
+			},
 			gray: {
 				100: '#f5f5f5',
 				200: '#eeeeee',
