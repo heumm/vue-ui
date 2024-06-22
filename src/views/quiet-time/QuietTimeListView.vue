@@ -84,6 +84,49 @@
 					</div>
 				</div> -->
 			</div>
+
+			<div class="flex justify-center mt-4">
+				<button
+					class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark disabled:bg-disabled mx-1"
+					:disabled="isFirstPage"
+					@click="
+						pageNo = Math.max(1, startPageIndex - onePage);
+						api.get.todayQt();
+					">
+					이전
+				</button>
+				<button
+					v-for="pageIndex in pageArray"
+					:key="pageIndex"
+					class="btn-xs mx-1"
+					:class="pageIndex === pageNo ? 'bg-secondary-dark' : 'bg-secondary'"
+					:disabled="pageIndex === pageNo"
+					@click="
+						pageNo = pageIndex;
+						api.get.todayQt();
+					">
+					{{ pageIndex }}
+					<!-- pageNo - pageNo % onePage 부터 onePage만큼 반복 -->
+				</button>
+				<!-- <ul class="pagingList">
+                <li 
+                v-for = "item in countInPages" 
+                :key = "item"
+                :class = "(startPage-1)+item == page.page ? 'active' : null"
+                @click = "selectPage( (startPage-1)+item )"
+                > {{(startPage-1) + item}} </li>
+            </ul> -->
+				<button
+					class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark disabled:bg-disabled mx-1"
+					:disabled="isLastPage"
+					@click="
+						pageNo = Math.min(totalPageNum, startPageIndex + onePage);
+						api.get.todayQt();
+					">
+					다음
+				</button>
+			</div>
+
 			<router-link
 				:to="`${$route.path}/new`"
 				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
@@ -102,46 +145,32 @@ import format from '@/util/format.js';
 import formatDate from '@/util/format.js';
 const layout = ref('table'); // 초기 레이아웃 설정
 
-const posts = ref([
-	// {
-	// 	id: 1,
-	// 	title: '제목 1',
-	// 	content: '내용 1',
-	// 	regDate: '2024-05-02',
-	// 	imageUrl: 'https://via.placeholder.com/150'
-	// },
-	// {
-	// 	id: 2,
-	// 	title: '제목 2',
-	// 	content: '내용 2',
-	// 	regDate: '2024-05-02',
-	// 	imageUrl: 'https://via.placeholder.com/150'
-	// },
-	// {
-	// 	id: 3,
-	// 	title: '제목 3',
-	// 	content: '내용 3',
-	// 	regDate: '2024-05-02',
-	// 	imageUrl: 'https://via.placeholder.com/150'
-	// },
-	// {
-	// 	id: 4,
-	// 	title: '제목 4',
-	// 	content: '내용 4',
-	// 	regDate: '2024-05-02',
-	// 	imageUrl: 'https://via.placeholder.com/150'
-	// },
-	// {
-	// 	id: 5,
-	// 	title: '제목 5',
-	// 	content: '내용 5',
-	// 	regDate: '2024-05-02',
-	// 	imageUrl: 'https://via.placeholder.com/150'
-	// }
-	// 데이터 예시. 실제 데이터로 교체하세요.
-]);
-
+const posts = ref([]);
+const pageNo = ref(1);
+const pageSize = ref(10);
+const totalPageNum = computed(() => Math.floor(totalCount.value / pageSize.value));
+const onePage = ref(5);
+const totalCount = ref(0);
 const store = useBoardLayoutStore();
+//시작인덱스 = (pageNo / onePage) * onePage
+const startPageIndex = computed(
+	() => Math.floor((pageNo.value - 1) / onePage.value) * onePage.value + 1
+);
+
+const endPageIndex = computed(() => startPageIndex.value + onePage.value - 1);
+
+const isFirstPage = computed(() => endPageIndex.value <= onePage.value);
+
+const isLastPage = computed(() => totalPageNum.value - startPageIndex.value < 5);
+const pageArray = computed(() => {
+	const arr = [];
+
+	for (let i = startPageIndex.value; i <= Math.min(totalPageNum.value, endPageIndex.value); i++) {
+		arr.push(i);
+	}
+
+	return arr;
+});
 
 onMounted(() => {
 	api.get.todayQt();
@@ -151,9 +180,16 @@ const api = {
 	get: {
 		todayQt: () => {
 			axios
-				.get('/api/v1/quiet-time/list')
+				.get('/api/v1/quiet-time/list', {
+					params: {
+						pageNo: pageNo.value,
+						pageSize: pageSize.value
+					}
+				})
 				.then((res) => {
-					posts.value = [...res.data];
+					const data = res.data;
+					totalCount.value = data.totalCount;
+					posts.value = [...data.articles];
 					// 모든 배열 요소에 대해 regDate 포맷팅 적용
 					posts.value = posts.value.map((post) => {
 						return {
@@ -161,9 +197,17 @@ const api = {
 							regDate: formatDate(post.regDate)
 						};
 					});
+					console.log('start:', startPageIndex.value);
+					console.log('end:', endPageIndex.value);
+					console.log('totalpage:', totalPageNum.value);
+					console.log('pagearr:', pageArray.value);
 				})
 				.catch((err) => {});
 		}
 	}
 };
+
+//먼저 현재 페이지, 총 페이지 갯수 변수 선언
+//네비게이션에 표시할 번호 갯수 정하기
+//몇 건씩 가저올지
 </script>
