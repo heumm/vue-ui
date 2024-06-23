@@ -120,7 +120,7 @@
 
 			<router-link
 				:to="`${$route.path}/new`"
-				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
+				class="btn-xs bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
 				>글쓰기</router-link
 			>
 		</div>
