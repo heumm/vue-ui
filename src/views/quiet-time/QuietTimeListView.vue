@@ -116,12 +116,29 @@
 					">
 					다음
 				</button>
+				<!-- <sm-button
+					:size="'xs'"
+					:color="'secondary'"
+					:disabled="isLastPage"
+					@click="
+						pageNo = Math.min(totalPageNum, startPageIndex + onePage);
+						api.get.todayQt();
+					"
+					>다음</sm-button
+				> -->
 			</div>
 
-			<router-link
+			<!-- <router-link
 				:to="`${$route.path}/edit`"
 				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
 				>글쓰기</router-link
+			> -->
+			<sm-button
+				:size="'sm'"
+				class="self-end"
+				:color="'secondary'"
+				@click="$router.push(`${$route.path}/edit`)"
+				>글쓰기</sm-button
 			>
 		</div>
 	</div>
@@ -134,6 +151,7 @@ import { useBoardLayoutStore } from '@/stores/store';
 import httpRequest from '@/axios/axios.js';
 // import format from '@/util/format.js';
 import { formatDate } from '@/util/format.js';
+import SmButton from '@/components/buttons/SmButton.vue';
 const layout = ref('table'); // 초기 레이아웃 설정
 
 const posts = ref([]);
