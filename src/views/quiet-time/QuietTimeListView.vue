@@ -119,8 +119,8 @@
 			</div>
 
 			<router-link
-				:to="`${$route.path}/new`"
-				class="btn-xs bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
+				:to="`${$route.path}/edit`"
+				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
 				>글쓰기</router-link
 			>
 		</div>
@@ -131,9 +131,9 @@
 import { computed, onMounted, ref } from 'vue';
 import { TableCellsIcon } from '@heroicons/vue/20/solid';
 import { useBoardLayoutStore } from '@/stores/store';
-import axios from '@/axios/axios.js';
-import format from '@/util/format.js';
-import formatDate from '@/util/format.js';
+import httpRequest from '@/axios/axios.js';
+// import format from '@/util/format.js';
+import { formatDate } from '@/util/format.js';
 const layout = ref('table'); // 초기 레이아웃 설정
 
 const posts = ref([]);
@@ -168,7 +168,7 @@ onMounted(() => {
 const api = {
 	get: {
 		todayQt: () => {
-			axios
+			httpRequest
 				.get('/api/v1/quiet-time/list', {
 					params: {
 						pageNo: pageNo.value,

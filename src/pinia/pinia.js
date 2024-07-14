@@ -1,5 +1,4 @@
 import { createPinia } from 'pinia';
-import { watch } from 'vue';
 
 // 플러그인 함수 정의
 const usePersistedStatePlugin = ({ store }) => {

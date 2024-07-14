@@ -86,7 +86,7 @@
 </template>
 
 <script setup>
-import axios from '@/axios/axios.js';
+import httpRequest from '@/axios/axios.js';
 import { ref, watch } from 'vue';
 import router from '@/router';
 
@@ -109,7 +109,7 @@ const api = {
 		// const isEmailNotConflict = await api.isEmailNotConflict();
 		if (!(await api.isEmailNotConflict())) return false;
 		if (!validation.password()) return false;
-		axios
+		httpRequest
 			.post('/api/v1/member/join', {
 				email: email.value,
 				name: name.value,
@@ -129,7 +129,7 @@ const api = {
 		let isNotConflict = false;
 		if (!validation.email()) return false;
 		try {
-			const res = await axios.post('/api/v1/member/check', {
+			const res = await httpRequest.post('/api/v1/member/check', {
 				email: email.value
 			});
 			isEmailValid.value = res.data;

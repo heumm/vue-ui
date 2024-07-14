@@ -4,4 +4,15 @@
 	</div>
 </template>
 
-<script setup></script>
+<script setup>
+import { onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
+// onMounted(() => {
+if (route.query.back) {
+	router.go(-1);
+}
+// });
+</script>

@@ -85,7 +85,7 @@
 				</div> -->
 			</div>
 			<router-link
-				:to="`${$route.path}/new`"
+				:to="`${$route.path}/edit`"
 				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
 				>글쓰기</router-link
 			>

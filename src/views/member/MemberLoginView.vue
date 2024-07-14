@@ -64,8 +64,9 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { mdiEyeOutline, mdiEyeOffOutline } from '@mdi/js';
 import SvgIcon from '@jamescoyle/vue-icon';
-import { useLoginFormStore, useMemberStore } from '@/stores/store';
-import axios from '@/axios/axios.js';
+import { useCsrfTokenStore, useLoginFormStore, useMemberStore } from '@/stores/store';
+import httpRequest from '@/axios/axios.js';
+// import { getCsrfToken } from '@/axios/axios.js';
 import router from '@/router';
 
 const passwordVisible = ref(false);
@@ -82,7 +83,7 @@ const togglePasswordVisibility = () => {
 const api = {
 	post: {
 		login: () => {
-			axios
+			httpRequest
 				.post('/api/v1/member/login', {
 					email: email.value,
 					password: password.value
@@ -99,11 +100,22 @@ const api = {
 					loginErrorMessage.value = err.response.data.message;
 				});
 		}
+	},
+	get: {
+		initToken: () => {
+			httpRequest
+				.get('/api/v1')
+				.then(() => {})
+				.catch(() => {});
+		}
 	}
 };
 
 onMounted(() => {
+	// alert('ㅎㅇ');
 	loginFormStore.isMounted = true;
+	const csrfStore = useCsrfTokenStore();
+	csrfStore.generateToken();
 });
 
 onUnmounted(() => {

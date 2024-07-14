@@ -2,28 +2,27 @@
 	<div>
 		<div class="flex flex-col items-stretch gap-y-2 w-full">
 			<div class="flex my-2 gap-x-2">
-				<!-- <label for="title">제목:</label> -->
 				<input
 					class="grow px-3 py-1 outline-none border rounded-sm placeholder:text-sm"
 					id="title"
-					v-model="title"
+					v-model="article.title"
 					placeholder="제목을 입력해주세요." />
 			</div>
 
 			<div class="flex flex-col gap-y-2 w-full border">
-				<!-- <editor v-model="content" /> -->
 				<div class="flex flex-col divide-y">
-					<my-tiptap-editor v-model="contents"></my-tiptap-editor>
+					<my-tiptap-editor v-model="article.content"></my-tiptap-editor>
 				</div>
-				<!-- {{ content }} -->
-				<!-- <div> -->
-
-				<!-- <h3>Content</h3>
-						<pre><code>{{ contents }}</code></pre> -->
-				<!-- </div> -->
 			</div>
 			<div class="flex flex-row-reverse">
 				<button
+					v-if="isModify"
+					class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark"
+					@click="api.put.todayQt">
+					수정
+				</button>
+				<button
+					v-else
 					class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark"
 					@click="api.post.todayQt">
 					작성
@@ -34,29 +33,55 @@
 </template>
 
 <script setup>
-import Editor from '@/components/Editor.vue';
 import MyTiptapEditor from '@/components/MyTiptapEditor.vue';
-import { onMounted, ref } from 'vue';
-import axios from '@/axios/axios.js';
+import { computed, onMounted, ref, watch } from 'vue';
+import httpRequest from '@/axios/axios.js';
 import { useLoginFormStore, useMemberStore } from '@/stores/store';
-import router from '@/router';
+// import router from '@/router';
+import { useRoute, useRouter } from 'vue-router';
 
-const title = ref('');
-const contents = ref('');
+// const articleId = ref();
+// const title = ref('');
+// const contents = ref('');
+
+const article = ref({ title: '', content: '' });
+
 const memberStore = useMemberStore();
-
-// onMounted(() => {
-// 	memberStore.
-// })
+const router = useRouter();
+const route = useRoute();
+const isModify = route.params.id !== undefined;
+onMounted(() => {
+	if (isModify) {
+		// articleId.value = route.params.id;
+		if (validation.url.value) {
+			api.get.article(route.params.id);
+		} else {
+			router.push({ name: 'NotFound' });
+		}
+	}
+});
 
 const api = {
+	get: {
+		article: (id) => {
+			httpRequest
+				.get(`/api/v1/quiet-time/${id}`)
+				.then((res) => {
+					article.value = { ...res.data };
+				})
+				.catch((err) => {
+					alert(err.response.data.message);
+					router.back();
+				});
+		}
+	},
 	post: {
 		todayQt: () => {
-			// if (!validation.form()) return false;
-			axios
+			if (!validation.form()) return false;
+			httpRequest
 				.post('/api/v1/quiet-time/new', {
-					title: title.value,
-					content: contents.value
+					title: article.value.title,
+					content: article.value.content
 					// authorId: memberStore.id
 				})
 				.then((res) => {
@@ -66,6 +91,21 @@ const api = {
 				.catch((err) => {
 					// console.log('error: ', err);
 				});
+		}
+	},
+	put: {
+		todayQt: () => {
+			httpRequest
+				.put(`/api/v1/quiet-time/${article.value.id}`, {
+					...article.value
+					// title: article.value.title,
+					// content: article.value.content
+				})
+				.then((res) => {
+					alert('게시글 수정 완료');
+					router.push(`/detail/todayqt/${article.value.id}`);
+				})
+				.catch((err) => {});
 		}
 	}
 };
@@ -77,15 +117,16 @@ const validation = {
 			alert('로그인이 필요합니다!');
 			const loginFormStore = useLoginFormStore();
 			loginFormStore.open();
-		} else if (title.value === '') {
+		} else if (article.value.title === '') {
 			alert('제목을 입력해주세요.');
-		} else if (contents.value === '') {
+		} else if (article.value.content === '') {
 			alert('내용을 입력해주세요.');
 		} else {
 			isValid = true;
 		}
 		return isValid;
-	}
+	},
+	url: computed(() => /^[0-9]+$/.test(route.params.id))
 };
 </script>
 

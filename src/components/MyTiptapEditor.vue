@@ -194,7 +194,7 @@ const editor = useEditor({
 	editorProps: {
 		attributes: {
 			class:
-				'prose prose-sm prose-gray-500 sm:prose-base lg:prose-lg xl:prose-2xl m-1 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2 prose-img:m-0 before:prose-p:content-none after:prose-p:content-none'
+				'prose prose-sm prose-gray-500 sm:prose-base lg:prose-lg xl:prose-2xl m-1 p-3 focus:outline-none prose-p:m-0 prose-hr:m-1 prose-hr:border-2 prose-img:m-0 before:prose-p:content-none after:prose-p:content-none'
 		}
 	},
 	onUpdate: () => {

@@ -13,6 +13,7 @@ import DetailView from '@/views/DetailView.vue';
 import BulletinDetailView from '@/views/bulletin/BulletinDetailView.vue';
 import MemberLoginView from '@/views/member/MemberLoginView.vue';
 import MemberJoinView from '@/views/member/MemberJoinView.vue';
+import OAuth2Success from '@/components/OAuth2Success.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
 			path: '/login',
 			name: 'MemberLogin',
 			component: MemberLoginView
+		},
+		{
+			path: '/oauth2success',
+			name: 'OAuth2Success',
+			component: OAuth2Success
 		},
 		{
 			path: '/join',
@@ -60,10 +66,21 @@ const router = createRouter({
 							component: QuietTimeListView
 						},
 						{
-							path: 'new',
-							name: 'QuietTimeEdit',
-							component: QuietTimeEditView,
-							meta: { requiresAuth: true }
+							path: 'edit',
+							children: [
+								{
+									path: '',
+									name: 'QuietTimeNew',
+									component: QuietTimeEditView,
+									meta: { requiresAuth: true }
+								},
+								{
+									path: ':id',
+									name: 'QuietTimeModify',
+									component: QuietTimeEditView,
+									meta: { requiresAuth: true }
+								}
+							]
 						},
 						{
 							path: ':id',
@@ -75,8 +92,6 @@ const router = createRouter({
 				},
 				{
 					path: 'bulletin',
-					// name: 'WeeklyBulletinList',
-					// component: WeeklyBulletinListView,
 					children: [
 						{
 							path: '',
@@ -121,6 +136,7 @@ router.beforeEach((to, from, next) => {
 
 	if (to.matched.some((record) => record.meta.requiresAuth) && !isLoggedIn) {
 		// 인증되지 않은 사용자는 로그인 모달 오픈
+		alert('로그인이 필요합니다.');
 		loginFormStore.open();
 	} else {
 		next(); // 인증된 사용자는 요청한 페이지로 이동
