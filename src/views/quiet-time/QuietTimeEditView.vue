@@ -128,6 +128,18 @@ const validation = {
 	},
 	url: computed(() => /^[0-9]+$/.test(route.params.id))
 };
+
+// watch(
+// 	() => article.value.content,
+// 	(newVal, oldVal) => {
+// 		console.log('newValue: ', newVal);
+// 		const base64Images = newVal.match(/<img src="data:image\/[^;]+;base64[^"]+"[^>]*>/g);
+// 		if (!base64Images) {
+// 			console.log('No images found');
+// 			return;
+// 		}
+// 	}
+// );
 </script>
 
 <style lang="scss" scoped></style>
