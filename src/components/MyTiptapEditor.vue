@@ -344,21 +344,21 @@ const buttonItems = [
 	}
 ];
 
-watch(
-	() => props.modelValue,
-	(value) => {
-		const isSame = editor.value.getHTML() === value;
+// watch(
+// 	() => props.modelValue,
+// 	(value) => {
+// 		const isSame = editor.value.getHTML() === value;
 
-		// JSON
-		// const isSame = JSON.stringify(this.editor.getJSON()) === JSON.stringify(value)
+// 		// JSON
+// 		// const isSame = JSON.stringify(this.editor.getJSON()) === JSON.stringify(value)
 
-		if (isSame) {
-			return;
-		}
-
-		editor.value.commands.setContent(value, false);
-	}
-);
+// 		if (isSame) {
+// 			return;
+// 		}
+// 		console.log(editor.value);
+// 		editor.value.commands.setContent(value, false);
+// 	}
+// );
 
 onBeforeUnmount(() => {
 	editor.value.destroy();
