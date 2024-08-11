@@ -49,7 +49,7 @@
 				</div>
 
 				<button
-					class="w-full bg-info mb-4 hover:bg-info-dark active:bg-info-extradark btn-lg"
+					class="w-full bg-secondary mb-4 hover:bg-secondary-dark active:bg-secondary-extradark btn-lg"
 					@click="$router.push('/join')">
 					이메일로 회원가입
 				</button>

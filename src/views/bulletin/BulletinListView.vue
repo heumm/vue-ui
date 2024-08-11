@@ -37,7 +37,7 @@
 						<col class="w-[70%]" />
 						<col class="w-[20%]" />
 					</colgroup>
-					<thead class="text-left bg-info text-white">
+					<thead class="text-left bg-secondary text-white">
 						<tr>
 							<th class="px-3 py-1 rounded-sm">ID</th>
 							<th class="px-3 py-1 rounded-sm">제목</th>

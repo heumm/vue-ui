@@ -2,7 +2,7 @@
 	<global-loading></global-loading>
 	<header-view class="relative z-10"></header-view>
 	<router-view class="grid grid-cols-12 gap-4 m-10 relative z-0 min-h-[500px]"></router-view>
-	<footer-view class="bottom-0 h-60"></footer-view>
+	<footer-view class="bottom-0 h-40"></footer-view>
 </template>
 
 <script setup>
