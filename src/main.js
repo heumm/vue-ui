@@ -20,6 +20,3 @@ app.component('GlobalLoading', GlobalLoading);
 
 app.config.globalProperties.$httpRequest = httpRequest;
 app.mount('#app');
-
-// Kakao.init('6122578aa3539b9abdee68552a74ed7a');
-// console.log(Kakao.isInitialized());
