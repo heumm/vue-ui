@@ -13,11 +13,11 @@
 
 			<div class="sm:flex sm:gap-x-12">
 				<div v-for="menu in menuStore.getMenus" :key="menu.id">
-					<!-- children있는 메뉴 -->
+					<!-- 지금 마우스를 올렸을 때 dropdownVerse를 true로 설정하니까 다른 모든 메뉴도 함께 dropdown이 활성화 되고있어. 이걸 따로따로 분리할 수 있을까? -->
 					<div
 						v-if="menu.children.length > 0"
-						@mouseenter="dropdownVerse = true"
-						@mouseleave="dropdownVerse = false"
+						@mouseenter="menu.showDropdown = true"
+						@mouseleave="menu.showDropdown = false"
 						class="inline-block relative text-left">
 						<div class="flex my-2">
 							<button class="flex gap-x-1 text-sm font-semibold leading-6 focus:outline-none">
@@ -39,14 +39,14 @@
 							leave-from-class="transform opacity-100 scale-100"
 							leave-to-class="transform opacity-0 scale-95">
 							<ul
-								v-if="dropdownVerse"
+								v-if="menu.showDropdown"
 								class="absolute -left-1 w-44 px-2 origin-top-left divide-y divide-dashed divide-primary rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 								<div v-for="child in menu.children" :key="child.id" class="">
 									<router-link
 										:to="child.uri"
 										@click="
 											menuStore.selectedMenuId = menu.id;
-											dropdownVerse = false;
+											menu.showDropdown = false;
 										"
 										class="block my-1 px-4 py-1 text-sm text-gray-800 hover:text-primary transition-colors duration-150">
 										{{ child.name }}
