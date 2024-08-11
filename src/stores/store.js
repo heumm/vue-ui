@@ -42,6 +42,12 @@ export const useMenuStore = defineStore('menus', () => {
 			if (menuList.value.length > 0) return;
 			const res = await httpRequest.get('/api/v1/menu');
 			menuList.value = res.data;
+			//하위 메뉴가 있는 경우에만 showDropdown 설정
+			menuList.value.forEach((menu) => {
+				if (menu.children && menu.children.length > 0) {
+					menu.showDropdown = ref(false);
+				}
+			});
 		} catch (err) {
 			// console.log('Failed to fetch menus:', err);
 		}
