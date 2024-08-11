@@ -37,12 +37,7 @@ import MyTiptapEditor from '@/components/MyTiptapEditor.vue';
 import { computed, onMounted, ref, watch } from 'vue';
 import httpRequest from '@/axios/axios.js';
 import { useLoginFormStore, useMemberStore } from '@/stores/store';
-// import router from '@/router';
 import { useRoute, useRouter } from 'vue-router';
-
-// const articleId = ref();
-// const title = ref('');
-// const contents = ref('');
 
 const article = ref({ title: '', content: '' });
 
@@ -52,7 +47,6 @@ const route = useRoute();
 const isModify = route.params.id !== undefined;
 onMounted(() => {
 	if (isModify) {
-		// articleId.value = route.params.id;
 		if (validation.url.value) {
 			api.get.article(route.params.id);
 		} else {
@@ -82,7 +76,6 @@ const api = {
 				.post('/api/v1/quiet-time/new', {
 					title: article.value.title,
 					content: article.value.content
-					// authorId: memberStore.id
 				})
 				.then((res) => {
 					alert('게시글 등록 완료');
@@ -98,8 +91,6 @@ const api = {
 			httpRequest
 				.put(`/api/v1/quiet-time/${article.value.id}`, {
 					...article.value
-					// title: article.value.title,
-					// content: article.value.content
 				})
 				.then((res) => {
 					alert('게시글 수정 완료');
@@ -128,18 +119,6 @@ const validation = {
 	},
 	url: computed(() => /^[0-9]+$/.test(route.params.id))
 };
-
-// watch(
-// 	() => article.value.content,
-// 	(newVal, oldVal) => {
-// 		console.log('newValue: ', newVal);
-// 		const base64Images = newVal.match(/<img src="data:image\/[^;]+;base64[^"]+"[^>]*>/g);
-// 		if (!base64Images) {
-// 			console.log('No images found');
-// 			return;
-// 		}
-// 	}
-// );
 </script>
 
 <style lang="scss" scoped></style>
