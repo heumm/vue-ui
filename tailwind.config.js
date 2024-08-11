@@ -21,18 +21,18 @@ export default {
 		},
 		colors: {
 			primary: {
+				extralight: '#d0e9ff',
+				light: '#a0d6ff',
+				DEFAULT: '#41bcff',
+				dark: '#006cbf',
+				extradark: '#004080'
+			},
+			secondary: {
 				extralight: '#fde4e3',
 				light: '#facfcf',
 				DEFAULT: '#e57373',
 				dark: '#af4448',
 				extradark: '#7f1d1f'
-			},
-			secondary: {
-				extralight: '#e0f7fa',
-				light: '#b2ebf2',
-				DEFAULT: '#4dd0e1',
-				dark: '#00838f',
-				extradark: '#005662'
 			},
 			accent: {
 				extralight: '#f3e5f5',
@@ -48,13 +48,13 @@ export default {
 				dark: '#616161',
 				extradark: '#212121'
 			},
-			info: {
-				extralight: '#e6f3fd',
-				light: '#cce5fc',
-				DEFAULT: '#64b5f6',
-				dark: '#1976d2',
-				extradark: '#0d47a1'
-			},
+			// info: {
+			// 	extralight: '#e6f3fd',
+			// 	light: '#cce5fc',
+			// 	DEFAULT: '#64b5f6',
+			// 	dark: '#1976d2',
+			// 	extradark: '#0d47a1'
+			// },
 			success: {
 				extralight: '#ecf6ee',
 				light: '#d6ecd9',
