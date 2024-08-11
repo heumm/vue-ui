@@ -3,30 +3,21 @@
 		<div class="flex flex-col w-full gap-y-2">
 			<div class="flex justify-between">
 				<div class="flex gap-x-1">
-					<button
-						class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark"
-						@click="store.setLayout('table')">
-						목록
-						<!-- <table-cells-icon></table-cells-icon> -->
-					</button>
-					<button
-						class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark"
-						@click="store.setLayout('card')">
-						카드
-					</button>
+					<sm-button color="primary" size="xs" @click="store.setLayout('table')"> 목록 </sm-button>
+					<sm-button color="primary" size="xs" @click="store.setLayout('card')"> 카드 </sm-button>
 				</div>
 				<div class="flex gap-x-1">
-					<select class="outline-none border focus:border-secondary rounded text-sm" name="" id="">
-						<option value="">제목</option>
-						<option value="">작성자</option>
-						<option value="">제목+내용</option>
-					</select>
-					<input
-						type="text"
-						class="grow px-1 outline-none border focus:border-secondary rounded placeholder:text-sm" />
-					<button class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark">
-						검색
-					</button>
+					<sm-select size="sm" v-model="searchFlag" :options="searchOptions" />
+					<sm-input v-model="searchVal" size="sm" placeholder="검색어를 입력하세요." />
+					<sm-button
+						size="xs"
+						color="primary"
+						@click="
+							$router.push({ path: $route.path, query: { flag: searchFlag, q: searchVal } });
+							api.get.todayQt();
+						"
+						>검색</sm-button
+					>
 				</div>
 			</div>
 
@@ -37,7 +28,7 @@
 						<col class="w-[70%]" />
 						<col class="w-[20%]" />
 					</colgroup>
-					<thead class="text-left bg-info text-white">
+					<thead class="text-left bg-secondary text-white">
 						<tr>
 							<th class="px-3 py-1 rounded-sm">ID</th>
 							<th class="px-3 py-1 rounded-sm">제목</th>
@@ -47,11 +38,15 @@
 					</thead>
 					<tbody class="text-sm text-gray-800">
 						<tr v-for="post in posts" :key="post.id">
-							<td class="px-3 py-1 border-b">{{ post.id }}</td>
-							<td class="px-3 py-1 border-b">
-								<router-link :to="`${$route.path}/${post.id}`">{{ post.title }}</router-link>
+							<td class="px-3 py-1 border-b border-gray-500">{{ post.id }}</td>
+							<td class="px-3 py-1 border-b border-gray-500">
+								<router-link
+									:to="`${$route.path}/${post.id}`"
+									class="hover:text-secondary active:text-secondary-dark transition-colors duration-150 block"
+									>{{ post.title }}</router-link
+								>
 							</td>
-							<td class="px-3 py-1 border-b">{{ post.regDate }}</td>
+							<td class="px-3 py-1 border-b border-gray-500">{{ post.regDate }}</td>
 							<!-- <td><img :src="post.imageUrl" alt="Post Image" width="100" /></td> -->
 						</tr>
 					</tbody>
@@ -70,73 +65,20 @@
 						<!-- <p class="hover:cursor-pointer">{{ post.content }}</p> -->
 					</div>
 				</div>
-				<!-- <div
-					v-for="(row, rowIndex) in rows"
-					:key="rowIndex"
-					class="grid"
-					:class="'grid-cols-' + columns">
-					<div v-for="(post, index) in row" :key="post.id" class="card">
-						<div class="card-image">
-							<img :src="post.imageUrl" alt="Post Image" />
-							<h3>{{ post.title }}</h3>
-							<p>{{ post.content }}</p>
-						</div>
-					</div>
-				</div> -->
 			</div>
-
-			<div class="flex justify-center mt-4">
-				<button
-					class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark disabled:bg-disabled mx-1"
-					:disabled="isFirstPage"
-					@click="
-						pageNo = Math.max(1, startPageIndex - onePage);
-						api.get.todayQt();
-					">
-					이전
-				</button>
-				<button
-					v-for="pageIndex in pageArray"
-					:key="pageIndex"
-					class="btn-xs mx-1"
-					:class="pageIndex === pageNo ? 'bg-secondary-dark' : 'bg-secondary'"
-					:disabled="pageIndex === pageNo"
-					@click="
-						pageNo = pageIndex;
-						api.get.todayQt();
-					">
-					{{ pageIndex }}
-				</button>
-				<button
-					class="btn-xs bg-secondary hover:bg-secondary-dark active:bg-secondary-extradark disabled:bg-disabled mx-1"
-					:disabled="isLastPage"
-					@click="
-						pageNo = Math.min(totalPageNum, startPageIndex + onePage);
-						api.get.todayQt();
-					">
-					다음
-				</button>
-				<!-- <sm-button
-					:size="'xs'"
-					:color="'secondary'"
-					:disabled="isLastPage"
-					@click="
-						pageNo = Math.min(totalPageNum, startPageIndex + onePage);
-						api.get.todayQt();
-					"
-					>다음</sm-button
-				> -->
-			</div>
-
-			<!-- <router-link
-				:to="`${$route.path}/edit`"
-				class="btn-sm bg-primary hover:bg-primary-dark active:bg-primary-extradark self-end"
-				>글쓰기</router-link
-			> -->
+			<!-- SmPageIndicator.vue파일로 컴포넌트화 시킬 부분start -->
+			<sm-page-indicator
+				v-model="pageNo"
+				:pageSize="pageSize"
+				:indicatorSize="5"
+				:totalCount="totalCount"
+				@prev="api.get.todayQt()"
+				@next="api.get.todayQt()"
+				@clickIndex="api.get.todayQt()"></sm-page-indicator>
 			<sm-button
-				:size="'sm'"
+				size="sm"
 				class="self-end"
-				:color="'secondary'"
+				color="secondary"
 				@click="$router.push(`${$route.path}/edit`)"
 				>글쓰기</sm-button
 			>
@@ -145,40 +87,50 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { TableCellsIcon } from '@heroicons/vue/20/solid';
 import { useBoardLayoutStore } from '@/stores/store';
 import httpRequest from '@/axios/axios.js';
 // import format from '@/util/format.js';
 import { formatDate } from '@/util/format.js';
 import SmButton from '@/components/buttons/SmButton.vue';
-const layout = ref('table'); // 초기 레이아웃 설정
-
+import SmInput from '@/components/SmInput.vue';
+import SmSelect from '@/components/SmSelect.vue';
+import SmPageIndicator from '@/components/SmPageIndicator.vue';
+const route = useRoute();
+const store = useBoardLayoutStore();
+const searchVal = ref('');
+const searchFlag = ref('1');
+const searchOptions = [
+	{
+		value: '1',
+		text: '제목'
+	},
+	{
+		value: '2',
+		text: '내용'
+	},
+	{
+		value: '3',
+		text: '제목+내용'
+	}
+];
 const posts = ref([]);
+
+// paging부분 start
 const pageNo = ref(1);
 const pageSize = ref(10);
-const totalPageNum = computed(() => Math.floor(totalCount.value / pageSize.value));
-const onePage = ref(5);
 const totalCount = ref(0);
-const store = useBoardLayoutStore();
-const startPageIndex = computed(
-	() => Math.floor((pageNo.value - 1) / onePage.value) * onePage.value + 1
-);
-
-const endPageIndex = computed(() => startPageIndex.value + onePage.value - 1);
-
-const isFirstPage = computed(() => endPageIndex.value <= onePage.value);
-
-const isLastPage = computed(() => totalPageNum.value - startPageIndex.value < 5);
-const pageArray = computed(() => {
-	const arr = [];
-	for (let i = startPageIndex.value; i <= Math.min(totalPageNum.value, endPageIndex.value); i++) {
-		arr.push(i);
-	}
-
-	return arr;
+//paging부분 end
+// 라우트가 변경될 때 데이터를 다시 로드합니다.
+watch(route, (newRoute) => {
+	searchFlag.value = newRoute.query.flag ? newRoute.query.flag : '1';
+	searchVal.value = newRoute.query.q || '';
+	api.get.todayQt();
 });
 
+// 컴포넌트가 처음 로드될 때 데이터를 가져오기.
 onMounted(() => {
 	api.get.todayQt();
 });
@@ -190,7 +142,9 @@ const api = {
 				.get('/api/v1/quiet-time/list', {
 					params: {
 						pageNo: pageNo.value,
-						pageSize: pageSize.value
+						pageSize: pageSize.value,
+						searchFlag: searchFlag.value,
+						searchVal: searchVal.value
 					}
 				})
 				.then((res) => {
