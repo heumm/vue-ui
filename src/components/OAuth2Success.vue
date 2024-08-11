@@ -23,8 +23,9 @@ const router = useRouter();
 onMounted(() => {
 	memberStore.id = route.query.id;
 	memberStore.name = route.query.name;
-	// router.replace('/');
-	router.push({ path: '/', replace: true, query: { back: true } });
+	window.history.replaceState(null, null, window.location.href);
+	// window.location.href = '/';
+	router.push({ path: '/', replace: true /*, query: { back: true }*/ });
 });
 const api = {
 	get: {
