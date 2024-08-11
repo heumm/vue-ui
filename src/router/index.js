@@ -21,6 +21,7 @@ const router = createRouter({
 		// 항상 화면 상단으로 스크롤
 		return { top: 0 };
 	},
+	//todo: addRoute를 활용해 동적으로 routes추가
 	routes: [
 		{
 			path: '/',
